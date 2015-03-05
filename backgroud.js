@@ -1,4 +1,4 @@
-var __DEBBUG__ = true;
+var __DEBBUG__ = false; 
 
 /* EXIT WITH FATAL ERROR + INPUT MESSAGE */
 function fatalError(message) {
@@ -51,6 +51,10 @@ function ObjModel() {
 		return this.STATE_constant_register;
 	}
 	
+	this.getStateLoginFailure = function() {
+		return this.STATE_login_failure;
+	}
+	
 	/* SETTERS */
 	
 	this.setStateUndefined = function(value) {
@@ -78,6 +82,8 @@ function ObjModel() {
 		if (this.STATE_connected != value && !this.STATE_desactivated) {
 			this.STATE_running = false;
 			this.STATE_connected = value;
+			if (!value)
+				console.log("CONNECTION STATE HAS JUST BEEN SET TO FALSE");
 			this.fireStateChanged();
 		}
 	}
@@ -109,6 +115,12 @@ function ObjModel() {
 		}
 	}
 	
+	this.setStateLoginFailure = function(value) {
+		if (this.STATE_login_failure != value) {
+			this.STATE_login_failure = value;
+		}
+	}
+	
 	/* METHODS */
 	
 	
@@ -133,7 +145,6 @@ function ObjModel() {
 				this.fireStateChanged();
 			}
 		}
-		
 	}
 	
 	/* DESCRIPTION: try to lock the mutex */
@@ -206,8 +217,6 @@ function ObjModel() {
 	this.fireStateChanged = function() {
 		var temp = this.STATE_desactivated;
 		
-		console.log("fireStateChanged");
-		
 		localStorage['model'] = JSON.stringify(model);
 		chrome.runtime.sendMessage({greeting: "hello"});
 		this.STATE_desactivated = temp;
@@ -220,6 +229,7 @@ function ObjModel() {
 	this.STATE_desactivated = false;
 	this.STATE_running = true;
 	this.STATE_ask_register = false;
+	this.STATE_login_failure = false;
 	this.mutex = 0;
 }
 
@@ -544,7 +554,6 @@ function blockController() {
 }
 
 function stateChanged(request, sender, sendResponse) {
-	console.log("Message = "+request.greeting);
 	
 	if (sender.url.indexOf("popup") > -1) {	
 		if (request.greeting == "switch_desactivated_state") {
@@ -576,20 +585,22 @@ function stateChanged(request, sender, sendResponse) {
 	}
 	else {
 		if (request.greeting == "login_success") {
-			if (__DEBBUG__)
+			//if (__DEBBUG__)
 				console.log("message login_success received");
 			
 			chrome.tabs.remove(tab_connect_id,function(tab){});
 			tab_connect_id = -1;
+			model.setStateLoginFailure(false);
 		}
 		else if (request.greeting == "login_failure") {
-			if (__DEBBUG__)
+			//if (__DEBBUG__)
 				console.log("message login_failure received");
 			
 			chrome.tabs.remove(tab_connect_id,function(tab){});
 			tab_connect_id = -1;
 			localStorage['extensionID'] = "";
 			model.updateStateRegistered();
+			model.setStateLoginFailure(true);
 		}
 	}
 }

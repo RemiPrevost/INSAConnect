@@ -42,6 +42,7 @@ function stateChanged(request, sender, sendResponse) {
 	var desactivated = JSON.parse(localStorage['model']).STATE_desactivated;
 	var ask_register = JSON.parse(localStorage['model']).STATE_ask_register;
 	var registered = JSON.parse(localStorage['model']).STATE_registered;
+	var login_failure = JSON.parse(localStorage['model']).STATE_login_failure;
 	
 	var color_code;
 	
@@ -51,9 +52,14 @@ function stateChanged(request, sender, sendResponse) {
 		section_formulaire.style.display = "none";
 	}
 	else if (ask_register) {
-		status_sentence.innerHTML = "Veuillez entrer vos identifiants de connexion :";
 		section_formulaire.style.display = "";
-		color_code = color_black;
+		if (login_failure) {
+			status_sentence.innerHTML = "<strong>Identifiants invalides</strong>! Veuillez entrer de nouveau vos identifiants de connexion:";
+			color_code = color_red;
+		} else {
+			status_sentence.innerHTML = "Veuillez entrer vos identifiants de connexion :";
+			color_code = color_black;
+		}
 	}
 	else if (running == 1) {
 		status_sentence.innerHTML = "Attendons que la connexion soit établie, cela ne devait pas être long.";
