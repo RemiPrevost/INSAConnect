@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="popup.css"/>
+</head>
+
+<body>
+	<header>
+		<p id="logo"><img src="img/logo.png" alt="icon"/><p>
+	</header>
+	
+	<hr >
+	
+	<section id="section_status">
+		<p id="status_word"><strong>Status</strong> : </p><p id="status_sentence"></p>
+	</section>
+	
+	
+	
+	<section id="section_formulaire" style="display:none">
+		<form id="form" >
+			<p style="margin-top: 5px; margin-bottom: 5px;">
+			   <label for="pseudo">Identifiant :</label>
+			   <input type="text" name="pseudo" id="pseudo" style="margin-left: 30px;" required>
+			   <br />
+			   <label for="pass">Mot de passe :</label>
+			   <input type="password" name="pass" id="pass" style="margin-left: 7px;" required>
+		   </p>
+		   <div style="text-align: center;">
+				<input type="checkbox"  name="memorize" id="memorize"  style="text-align: center;"/> <label for="memorize">Se souvenir de mes identifiants</label><br />
+				<input id="btn_cnx" name="accept" type="submit" value="Connexion" style="text-align: center;"/>
+				<p style="font-size: 75%; margin-top: 0px; margin-bottom: 0px;padding-top: 2px;padding-bottom: 2px;">En cliquant sur Connexion, vous accepter les conditions de la <a id="link_charte">charte informatique</a> de l'INSA</p>
+				<p id="wanning_error" style="color:red;font-size: 85%; margin-top: 0px; margin-bottom: 0px;padding-top: 2px;padding-bottom: 2px;"></p>
+			</div>
+		</form>
+	</section>
+
+	<hr >
+	
+	<section>
+		<div class="clickable" id="desactivation_field">Laissez moi gérer ma connexion</div>
+		<div class="clickable" id="erase_data" style="display:none">Oublier mes identifiants</div>
+		<div class="clickable" id="read_charte" >Lire la charte informatique de l'INSA</div>
+	</section>
+	
+	<hr >
+	
+	<footer>
+		<p>Extension conçue par Rémi Prévost</p>
+		<a href="mailto:rprevost@etud.insa-toulouse.fr">rprevost@etud.insa-toulouse.fr</a>
+	</footer>
+
+	<script src="popup.js"></script>
+</body>
+
+
+
+</html>

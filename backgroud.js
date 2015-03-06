@@ -82,8 +82,6 @@ function ObjModel() {
 		if (this.STATE_connected != value && !this.STATE_desactivated) {
 			this.STATE_running = false;
 			this.STATE_connected = value;
-			if (!value)
-				console.log("CONNECTION STATE HAS JUST BEEN SET TO FALSE");
 			this.fireStateChanged();
 		}
 	}
@@ -585,7 +583,7 @@ function stateChanged(request, sender, sendResponse) {
 	}
 	else {
 		if (request.greeting == "login_success") {
-			//if (__DEBBUG__)
+			if (__DEBBUG__)
 				console.log("message login_success received");
 			
 			chrome.tabs.remove(tab_connect_id,function(tab){});
@@ -593,7 +591,7 @@ function stateChanged(request, sender, sendResponse) {
 			model.setStateLoginFailure(false);
 		}
 		else if (request.greeting == "login_failure") {
-			//if (__DEBBUG__)
+			if (__DEBBUG__)
 				console.log("message login_failure received");
 			
 			chrome.tabs.remove(tab_connect_id,function(tab){});
